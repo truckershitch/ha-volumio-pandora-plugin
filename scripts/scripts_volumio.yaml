@@ -1,0 +1,6 @@
+### VOLUMIO SCRIPTS ###
+
+play_hornet_station:
+  alias: "Play Hornet Station"
+  sequence:
+  - service: shell_command.play_volumio_pandora_station

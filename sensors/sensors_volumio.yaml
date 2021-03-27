@@ -1,0 +1,9 @@
+## VOLUMIO SENSORS ###
+
+## Is this necessary anymore? ##
+
+# - platform: mqtt
+#   name: Volumio Pandora stationData Sensor
+#   state_topic: 'volumio/pandora/stationData'
+#   value_template: '{{ value_json }}'
+#   json_attributes_topic: 'volumio/pandora/stationData'

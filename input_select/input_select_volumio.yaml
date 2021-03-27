@@ -1,0 +1,6 @@
+### VOLUMIO INPUT_SELECT ###
+
+hornet_station:
+  name: Hornet
+  options:
+    - None

@@ -1,0 +1,8 @@
+### MISC SCRIPTS ###
+
+google_sync_devices: # called by update_options.py
+  alias: "Sync Home Assistant to Google Assistant"
+  sequence:
+  - service: google_assistant.request_sync
+    data_template:
+      agent_user_id: !secret agent_user_id
