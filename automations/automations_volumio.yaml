@@ -1,6 +1,6 @@
 ### VOLUMIO ###
 
-- id: input_select_set_options_hornet_station
+- id: set_options_input_select_hornet_station
   alias: Load Hornet stations
   trigger:
   - platform: homeassistant
@@ -12,12 +12,23 @@
     data:
       entity_id: input_select.hornet_station
       retain_state: hell yes
-      options_csv: "{% if trigger.payload != Undefined %}None, {{ (trigger.payload | from_json) | map(attribute='name') | join(', ') }}{% else %}None{% endif %}"
+      options_csv: >-
+        {% if trigger.payload_json != Undefined %}
+          {{ 'None, ' }}
+          {% for staId in trigger.payload_json %}
+            {{ trigger.payload_json[staId]['name'] }}
+            {% if not loop.last %}
+              {{ ', ' }}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          None
+        {% endif %}
   # - service: google_assistant.request_sync
   #   data_template:
   #     agent_user_id: !secret agent_user_id
 
-- id: input_select_select_option_hornet_station
+- id: select_option_input_select_hornet_station
   alias: Update Hornet station in HA when station changes
   trigger:
     platform: mqtt
@@ -26,7 +37,7 @@
   - service: input_select.select_option
     entity_id: input_select.hornet_station
     data:
-      option: "{{ trigger.payload | from_json }}"
+      option: "{{ trigger.payload_json }}" # will take another look at this
 
 - id: play_hornet_station_on_volumio
   alias: Play Hornet station on Volumio
@@ -37,3 +48,4 @@
   action:
   - service: script.turn_on
     entity_id: script.play_hornet_station
+    
