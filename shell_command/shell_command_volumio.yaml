@@ -1,8 +1,7 @@
-# Call with </config/ws_send_volumio_command.py> <service> <service_method/procedure> <dataJSON>
-# play_volumio_pandora_station: "\"/config/ws_volumio_callMethod.py pandora clearAndPlayStation \"{\"stationName\": \"{{ states(\"input_select.pandora_station\") }}\"}\""
 play_volumio_pandora_station: >-
-  {%- set newStationName = states('input_select.hornet_station') %}
-  {% set dataJSON = "{'stationName': '" + newStationName + "'}" %}
-  {% set serviceName = "pandora" %}
-  {% set pluginMethod = "clearAndPlayStation" %}
+  {% set newStationName = states('input_select.hornet_station') %}
+  {% set dataJSON = {"stationName": newStationName} | tojson %}
+  {% set serviceName = 'pandora' %}
+  {% set pluginMethod = 'clearAndPlayStation' %}
   /config/ws_send_volumio_command.py {{ [serviceName, pluginMethod] | join(' ') }} "{{ dataJSON }}"
+  

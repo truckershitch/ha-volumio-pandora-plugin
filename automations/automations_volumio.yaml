@@ -14,30 +14,31 @@
       retain_state: hell yes
       options_csv: >-
         {% if trigger.payload_json != Undefined %}
-          {{ 'None, ' }}
+          {{ 'None,' }}
           {% for staId in trigger.payload_json %}
             {{ trigger.payload_json[staId]['name'] }}
             {% if not loop.last %}
-              {{ ', ' }}
+              {{ ',' }}
             {% endif %}
           {% endfor %}
         {% else %}
-          None
+          {{ 'None' }}
         {% endif %}
-  # - service: google_assistant.request_sync
-  #   data_template:
-  #     agent_user_id: !secret agent_user_id
 
 - id: select_option_input_select_hornet_station
   alias: Update Hornet station in HA when station changes
   trigger:
-    platform: mqtt
+  - platform: mqtt
     topic: volumio/pandora/stationName
   action:
   - service: input_select.select_option
-    entity_id: input_select.hornet_station
+    target:
+      entity_id: input_select.hornet_station
     data:
-      option: "{{ trigger.payload_json }}" # will take another look at this
+      option: '{{ trigger.payload_json.stationName }}'
+  # - service: persistent_notification.create
+  #   data_template:
+  #     message: '{{ trigger.payload_json.stationName }}'
 
 - id: play_hornet_station_on_volumio
   alias: Play Hornet station on Volumio
@@ -48,4 +49,3 @@
   action:
   - service: script.turn_on
     entity_id: script.play_hornet_station
-    
