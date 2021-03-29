@@ -43,9 +43,12 @@
 - id: play_hornet_station_on_volumio
   alias: Play Hornet station on Volumio
   trigger:
-    platform: state
-    entity_id: input_select.hornet_station
-  condition: "{{ trigger.to_state.state != 'None' }}"
+  - platform: template
+    value_template: >-
+      {% set hornet_state = states('input_select.hornet_station') %}
+      {% if hornet_state is not none and hornet_state != 'None' %}
+        true
+      {% endif %}
   action:
   - service: script.turn_on
     entity_id: script.play_hornet_station
