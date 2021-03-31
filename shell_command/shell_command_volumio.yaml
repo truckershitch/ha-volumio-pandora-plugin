@@ -1,7 +1,1 @@
-play_volumio_pandora_station: >-
-  {% set newStationName = states('input_select.hornet_station') %}
-  {% set dataJSON = {"stationName": newStationName} | tojson %}
-  {% set serviceName = 'pandora' %}
-  {% set pluginMethod = 'clearAndPlayStation' %}
-  /config/ws_send_volumio_command.py {{ [serviceName, pluginMethod] | join(' ') }} "{{ dataJSON }}"
-  
+play_volumio_pandora_station: "/etc/hass/config/bin/socketio_send_volumio_cmd.py pandora clearAndPlayStation '{ \"stationName\": \"{{ newStation }}\" }'"

@@ -44,11 +44,8 @@
   alias: Play Hornet station on Volumio
   trigger:
   - platform: template
-    value_template: >-
-      {% set hornet_state = states('input_select.hornet_station') %}
-      {% if hornet_state is not none and hornet_state != 'None' %}
-        true
-      {% endif %}
+    value_template: "{{ states('input_select.hornet_station') is not none and states('input_select.hornet_station') != 'None' }}"
   action:
-  - service: script.turn_on
-    entity_id: script.play_hornet_station
+  - service: shell_command.play_volumio_pandora_station
+    data_template:
+      newStation: "{{ states('input_select.hornet_station') }}"
